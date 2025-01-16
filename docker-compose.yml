@@ -62,6 +62,7 @@ services:
       - REP_MODE=replica
     volumes:
       - pgreplica:/var/lib/postgresql/data
+      - trigger_file:/tmp/trigger_file
     depends_on:
       - postgres-primary
     
@@ -76,7 +77,9 @@ services:
       - WAIT_DB_HOSTS=postgres-primary postgres-replica
     volumes:
       - ./pgpool/pgpool.conf:/etc/pgpool2/pgpool.conf
+      - trigger_file:/tmp/trigger_file
 
 volumes:
   pgmaster:
   pgreplica:
+  trigger_file:

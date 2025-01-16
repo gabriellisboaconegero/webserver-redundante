@@ -7,5 +7,7 @@ RUN chmod +x /failover.sh
 COPY ./wait-for-db.sh /wait-for-db.sh
 RUN chmod +x /wait-for-db.sh
 
+RUN mkdir /tmp/trigger_file
+
 ENTRYPOINT ["/wait-for-db.sh"]
 CMD ["pgpool", "-n"]

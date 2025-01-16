@@ -362,12 +362,19 @@ _main() {
 
 			EOM
 		fi
+		
+		if [ "$REP_MODE" = 'primary' ]; then
+			echo "Replication mode: ON"
+			set -- "$@" -c wal_level=replica
+			set -- "$@" -c hot_standby=on
+			set -- "$@" -c max_wal_senders=10
+			set -- "$@" -c max_replication_slots=10
+			set -- "$@" -c hot_standby_feedback=on
+			set -- "$@" -c wal_log_hints=on
+		fi
 	fi
 
-	if [ "$REP_MODE" = 'primary' ]; then
-		echo "Replication mode: ON"
-		set -- "$@" -c wal_level=replica -c hot_standby=on -c max_wal_senders=10 -c max_replication_slots=10 -c hot_standby_feedback=on
-	fi
+	
 
 	exec "$@"
 }
@@ -384,7 +391,7 @@ _replica() {
 
 	echo 'Backup done, starting replica...'
 	chmod 0700 ${PGDATA}
-	postgres
+	postgres -c promote_trigger_file='/tmp/trigger_file/trigger'
 }
 
 if ! _is_sourced; then
