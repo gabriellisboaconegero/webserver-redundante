@@ -1,4 +1,20 @@
 services:
+  web-server:
+    name: web-server1
+    build: ./server
+    ports:
+      - 5000:5000
+    env_file: .env
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST=pgpool
+      - POSTGRES_PORT=9999
+      - POSTGRES_TABLE=infos
+    volumes:
+      - ./server/app.py:/app/app.py
+    depends_on:
+      - pgpool
+
   postgres-primary:
     healthcheck:
       test: 'pg_isready -U postgres --dbname=postgres'
