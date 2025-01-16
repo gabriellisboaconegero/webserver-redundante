@@ -32,6 +32,9 @@ def index():
     my_table = os.getenv('POSTGRES_TABLE', 'test')
     cursor.execute(f"select * from {my_table} order by time_collect desc limit 1;")
     data = cursor.fetchone()
+    cursor.execute(f"show pool_nodes;")
+    pool_nodes = cursor.fetchall()
+    db_name = [info[1] for info in pool_nodes if info[7] == 'true'][0]
     conn.close()
 
     host_name = socket.gethostname()
@@ -46,6 +49,7 @@ def index():
     </head>
     <body>
         <h1>Host: {{ host }}</h1>
+        <h1>Database: {{db_name}}</h1>
         <p>Uso de CPU: {{data[1]}}%</p>
         <p>Memória: {{data[2]}}B</p>
         <p>Timestamp da coleta: {{data[4]}}</p>
@@ -54,7 +58,7 @@ def index():
     </html>
     """
 
-    return render_template_string(html_template, host=host_name, data=data)
+    return render_template_string(html_template, host=host_name, data=data, db_name=db_name)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
