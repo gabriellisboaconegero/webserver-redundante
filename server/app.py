@@ -73,6 +73,7 @@ def index():
         <p>Memória: {{data[2]}}B</p>
         <p>Timestamp da coleta: {{data[4]}}</p>
         <p>IP do host: {{data[3]}}</p>
+        <p>Latência com google.com: {{data[5]}}ms</p>
     </body>
     </html>
     """

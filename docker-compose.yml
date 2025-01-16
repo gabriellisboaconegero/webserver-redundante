@@ -1,6 +1,5 @@
 services:
   web-server1:
-    container_name: web-server1
     build: ./server
     env_file: .env
     environment:
@@ -14,7 +13,6 @@ services:
       - pgpool
 
   web-server2:
-    container_name: web-server2
     build: ./server
     env_file: .env
     environment:
@@ -29,7 +27,6 @@ services:
   
   nginx:
     image: nginx:latest
-    container_name: nginx
     ports:
       - 8080:8080
     volumes:
@@ -52,7 +49,7 @@ services:
       - REP_MODE=primary
     volumes:
       - pgmaster:/var/lib/postgresql/data
-      - ./00_init.sql:/docker-entrypoint-initdb.d/00_init.sql
+      - ./postgres/00_init.sql:/docker-entrypoint-initdb.d/00_init.sql
   
   postgres-replica:
     build: ./postgres

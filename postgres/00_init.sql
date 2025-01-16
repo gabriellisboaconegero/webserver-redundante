@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS infos (
     uso_cpu float,
     memoria INT,
     ip TEXT,
-    time_collect TIMESTAMP default current_timestamp
+    time_collect TIMESTAMP default current_timestamp,
+    ping_info FLOAT
 );

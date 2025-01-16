@@ -14,9 +14,10 @@ collect() {
     memory_percent=$(echo "scale=2; $memory_used / $memory_total * 100" | bc)
 
     ip_address=$(hostname -I | awk '{print $1}')
+    ping_info=$(ping -c 1 google.com | grep 'time=' | cut -d'=' -f4 | awk '{print $1}')
 
     source .env
-    QUERY_SQL="insert into infos (uso_cpu, memoria, ip) values ($cpu_usage, $memory_used, '$ip_address')"
+    QUERY_SQL="insert into infos (uso_cpu, memoria, ip, ping_info) values ($cpu_usage, $memory_used, '$ip_address', $ping_info)"
     POSTGRES_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:9999/postgres
     echo Executando: $POSTGRES_URI "|" $QUERY_SQL
 
