@@ -22,8 +22,38 @@ de qual container o servidor está servindo e de qual banco foi feita a query.
 
 Um servidor Nginx fica fazendo o balanceamento para os dois servidores.
 
+## Como rodar
+Para rodar a aplicação basta subir os container com
+```shell
+docker compose up -d
+```
+
+Porém o coletor de dados não vai estar rodando, para isso é preciso inicializar ele também
+```
+# Intervalo default 60s
+bas coletor.sh [intervalo]
+```
+
+Alguns problemas podem acontecer durante a execução do docker compose, para evitar que as coisas estejam
+corretas e sejam lançadas na ordem correta existem alguns scripts.
+
+**setup.sh**: Apaga o projeto compose e deleta as imagens. Serve para que os volumes estejam corretos
+ao inicializar a aplicação.
+**run.sh**: Sobe os containers e inicia o coletor de dados.
+
+Para parar a aplicação basta rodar
+```shell
+docker compose stop
+```
+
+Para retomar
+```shell
+docker compose start
+```
+
 ## Observações
 - Todas as aplicações tem acesso a todas as outras, não existem networks especificas para cada uma.
 - As portas disponíveis são `9999` e `8080`. Onde a porta `9999` é a do `pgpool` para que coletor
 possa inserir os dados no banco. A porta `8080` é para acessar o Nginx.
 - A aplicação web não atualiza dinâmicamente as informações, apenas quando a página é recarregada.
+- O banco não é cofigurado para ter failback, ou seja, restaurar o banco principal em caaso de recuperação de um failover.
