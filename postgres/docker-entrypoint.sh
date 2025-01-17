@@ -362,7 +362,7 @@ _main() {
 
 			EOM
 		fi
-		
+
 		if [ "$REP_MODE" = 'primary' ]; then
 			echo "Replication mode: ON"
 			set -- "$@" -c wal_level=replica
@@ -371,6 +371,7 @@ _main() {
 			set -- "$@" -c max_replication_slots=10
 			set -- "$@" -c hot_standby_feedback=on
 			set -- "$@" -c wal_log_hints=on
+			set -- "$@" -c synchronous_commit=remote_apply
 		fi
 	fi
 

@@ -47,16 +47,19 @@ def index():
         return render_template_string(html_template, host=host_name)
     cursor = conn.cursor()
 
+    # Pega a dados de monitoramento mais recentes
     my_table = os.getenv('POSTGRES_TABLE', 'test')
     cursor.execute(f"select * from {my_table} order by time_collect desc limit 1;")
     data = cursor.fetchone()
 
+    # Pega dados sobre 'nodes' do pgpool (implica que esteja executando pgpool)
     cursor.execute(f"show pool_nodes;")
     pool_nodes = cursor.fetchall()
+    # diversos campos, um deles (campo 7) diz para qual banco foi feito o load balancing
+    # da ultima query
     db_name = [info[1] for info in pool_nodes if info[7] == 'true'][0]
 
     conn.close()
-
 
     html_template = """
     <!DOCTYPE html>
