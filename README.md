@@ -1,4 +1,7 @@
 # Aplicação de webserver com redundância
+Desevolvida em WSL, não foi testado em Linux nativo. É necessário conectar com o docker Desktop do Windows 
+para funcionar.
+
 ## Componentes
 - Dois webserver Python/Flask
 - Dois bancos de dados postgressql com replicaçao por streaming
@@ -39,6 +42,7 @@ corretas e sejam lançadas na ordem correta existem alguns scripts.
 
 **setup.sh**: Apaga o projeto compose e deleta as imagens. Serve para que os volumes estejam corretos
 ao inicializar a aplicação.
+
 **run.sh**: Sobe os containers e inicia o coletor de dados.
 
 Para parar a aplicação basta rodar
